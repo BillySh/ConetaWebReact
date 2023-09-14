@@ -1,0 +1,56 @@
+.TablaD{
+    background-color: #93ACB5!important;
+    color: green!important;
+}
+.TablaA{
+    height: 100%;
+    width: 50%!important;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+.td{
+    color:#93ACB5;
+    background-color: #A9D3FF;
+}
+
+.th{
+    color: #93ACB5;
+    background-color: #93ACB5;
+}
+
+.Fondo{
+    background-color: #F2F4FF;
+    height: 100%;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.Boton{
+    color:white!important;
+    background-color: #c70000!important;
+    width: 50%;
+    height: 50%;
+    padding: 5px!important;
+    margin: 5px;
+}
+
+.Atras{
+    color:white!important;
+    background-color: #c70000!important;
+    width: 5%;
+    height: 50%;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+.body{
+    background-color: red;
+    background: red;
+    color: #F2F4FF;
+
+}
