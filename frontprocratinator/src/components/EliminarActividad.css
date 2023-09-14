@@ -20,7 +20,7 @@
 }
 
 .Fondo{
-    background-color: #F2F4FF;
+    background-color: #dfdfdf;
     height: 100%;
     width: 80%;
     margin-left: auto;
@@ -46,6 +46,7 @@
     height: 50%;
     display: flex !important;
     justify-content: center !important;
+    margin: 15px!important;
 }
 
 .body{

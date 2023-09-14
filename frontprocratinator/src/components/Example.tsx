@@ -11,6 +11,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Slide from '@mui/material/Slide';
 import "./Fields.css"
 
 import "./EliminarActividad.css"
@@ -27,7 +28,7 @@ function Example(){
       };
 
     
-    const [elminar, setEliminar]=useState(false);
+    const [eliminar, setEliminar]=useState(false);
 
     const [contador,setContador]=useState(168);
     const [name,setName]=useState("");
@@ -141,6 +142,11 @@ function Example(){
         setCreate(false);
     }
 
+    function salirTareaFin(){
+        setEliminar(false);
+        setCreate(false);
+    }
+
     function onChangeInput(event:any){
         const {value}=event.target
         setName(value)
@@ -169,18 +175,20 @@ function Example(){
         <div>
             <div className="top-bar">
                 <div className="logo">
-                    <a href="http://localhost:3000/contact">Procratinator 3000</a>
+                    <a  href="https://www.youtube.com/watch?v=ROK_7zDkQeg&ab_channel=Psych2Go">Procratinator 3000</a>
                 </div>
                 
                 </div>
 
             
 
-            {nueva=== false && elminar=== false &&
+            {nueva=== false && eliminar=== false &&
+                <Slide direction="down"  in={!eliminar && !nueva} mountOnEnter unmountOnExit >
                 <div>
 
                 <br></br>
                 <InputLabel>Horas para procrastinar</InputLabel>
+                
                 <h1 style={textStyle}>{contador}</h1>
 
                 <br></br>
@@ -191,42 +199,53 @@ function Example(){
                 <Button variant="outlined" startIcon={<DeleteIcon />} onClick={eliminarTarea}>Eliminar</Button>
                 <br></br>
                 <br></br>
-            
-                    <table>
-                    <thead>
-                        <tr>
-                        <th>ID</th>
-                        <th>TipoEntrega</th>
-                        <th>FechaEntrega</th>
-                        <th>Materia</th>
-                        <th>Horas</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data.map((item) => (
-                        <tr key={item.id}>
-                            <td>{item.id}</td>
-                            <td>{item.Tipo}</td>
-                            <td>{item.FechaEntrega}</td>
-                            <td>{item.Materia}</td>
-                            <td>{item.Horas}</td>
-                        </tr>
-                        ))}
-                    </tbody>
-                    </table>
+                    <TableContainer component={Paper} className="TablaA">
+                        <Table  sx={{ minWidth: 450 }} aria-label="simple table">
+                        <TableHead>
+                        <TableRow className="TablaD">
+                            
+                            <TableCell align="center">Tipo de Entrega</TableCell>
+                            <TableCell align="center">FechaEntrega</TableCell>
+                            <TableCell align="center">Materia</TableCell>
+                            <TableCell align="center">Horas</TableCell>
+                            
+                        </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {data.map((item) => (
+                                
+                                <TableRow
+                                key={item.id}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                className='Fila'
+                                >
+                                <TableCell component="th" scope="row">
+                                {item.Tipo}
+                                </TableCell>
+                                    <TableCell align="center">{item.FechaEntrega}</TableCell>
+                                    <TableCell align="center">{item.Materia}</TableCell>
+                                    <TableCell align="center">{item.Horas}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                        </Table>
+                    </TableContainer>
                 
                 
                 </div>
+                </Slide>
             }
             
             
 
             {nueva===true &&
+                <Slide direction="up"  in={nueva} mountOnEnter unmountOnExit >
                 <div>
+                <Button variant="contained" className='Atras' onClick={salirTareaFin}>Atrás</Button>
                     <br></br>
                     <br></br>
                     <InputLabel>Materia</InputLabel>
-                    <select id="Materia" name="Materia">
+                    <select id="Materia" name="Materia" className="Opcion">
                         <option value="Matematicas">Matematicas</option>
                         <option value="Biologia">Biologia</option>
                         <option value="Fisica">Fisica</option>
@@ -235,14 +254,14 @@ function Example(){
                     </select>
                     
                     <InputLabel>Tipo de Entrega</InputLabel>
-                    <select id="Tipo" name="Tipo"  >
+                    <select id="Tipo" name="Tipo"  className="Opcion">
                         <option value="Examen">Examen</option>
                         <option value="Tarea">Tarea</option>
                     </select> 
                     <br></br>
                     <br></br>
                     <InputLabel>Horas estimadas</InputLabel>
-                    <TextField id="outlined-basic" label="numero" variant="outlined" value={horas} onChange={onChangeInputH}/>
+                    <TextField id="outlined-basic" label="numero" variant="outlined" value={horas} onChange={onChangeInputH} className="Input"/>
                     <br></br>
                     <br></br>
                     <InputLabel>Fecha de entrega</InputLabel>
@@ -254,14 +273,15 @@ function Example(){
 
                           
                 </div>
-
+                </Slide>
 
             }
 
 
-            {elminar===true &&
+            {eliminar===true &&
+            <Slide direction="up"  in={eliminar} mountOnEnter unmountOnExit >
             <div className="Fondo">
-            <Button variant="contained" className='Atras'>Atrás</Button>
+            <Button variant="contained" className='Atras' onClick={salirTareaFin}>Atrás</Button>
             <h1>Eliminar Actividades</h1>
             <TableContainer component={Paper} className="TablaA">
                 <Table sx={{ minWidth: 450 }} aria-label="simple table" >
@@ -298,6 +318,7 @@ function Example(){
                 </Table>
                 </TableContainer>
             </div>
+            </Slide>
             }
 
 
