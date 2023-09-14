@@ -1,13 +1,14 @@
 import React from 'react';
-import logo from './logo.svg';
+//import logo from './logo.svg';
 import './App.css';
-import Example from './components/Example';
+import Example from './src/components/Example';
+import EliminarActividad from './src/components/EliminarActividad'
 
 
 function App() {
   return (
     <div className="App">
-      <Example></Example>
+      <EliminarActividad></EliminarActividad>
     </div>
   );
 }
