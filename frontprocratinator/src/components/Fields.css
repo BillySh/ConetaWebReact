@@ -1,0 +1,18 @@
+/* Style inputs */
+input[type=text], select {
+    background-color: rgb(219, 220, 220);
+    width: 98%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  
+  
+  /* Add a background color to the submit button on mouse-over */
+  input[type=submit]:hover {
+    background-color: #45a049;
+  }
