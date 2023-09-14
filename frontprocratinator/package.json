@@ -20,11 +20,7 @@
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
-<<<<<<< Updated upstream
     "animate.css": "^4.1.1",
-=======
-    "axios": "^1.5.0",
->>>>>>> Stashed changes
     "css-check": "^0.0.1",
     "nth-check": "^2.1.1",
     "react": "^18.2.0",
