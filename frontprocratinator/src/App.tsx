@@ -13,7 +13,7 @@ function App() {
     <div className="App">
 
       <React.StrictMode>
-        <CreateEntregaForm></CreateEntregaForm>
+        <Example></Example>
       </React.StrictMode>
     </div>
   );

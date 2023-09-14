@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Button from '@mui/material/Button';
 import { TextField } from "@mui/material";
 import { InputLabel } from '@mui/material';
@@ -12,6 +12,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Slide from '@mui/material/Slide';
+import LoadingButton from '@mui/lab/LoadingButton';
+import axios from "axios";
+import { useEffect, useState } from "react";
 import "./Fields.css"
 
 import "./EliminarActividad.css"
@@ -27,16 +30,47 @@ function Example(){
         color: 'Black',
       };
 
+
+    //-----------------------conectividad--------------------------------------
+    const [saving,setSaving]=useState(false);
+    const [entregas,setEntregas]=useState([]);
+
+    //Cosillas
+    const [tipo,setTipo]=useState("");
+    const [materia,setMateria]=useState("");
+    const [nombre_actividad,setActividad]=useState("");
+    const [fecha,setFecha]=useState("");
+    const [horas,setHora]=useState("");
+
+    function save(){
+        setSaving(true);
+        axios.post("http://localhost:8000/entrega/create",{
+            //-----------
+            tipo: tipo,
+            materia: materia,
+            horas: horas,
+            nombre_actividad: nombre_actividad,
+            fecha:fecha,
+        }).then((response)=>{
+            setSaving(false);
+            listEntregas();
+        })
+    }
+    function listEntregas(){
+        axios.get("http://localhost:8000/").then((response)=>{
+            setEntregas(response.data)
+        })
+    }
+    useEffect(()=>{
+        listEntregas();
+    },[])
+    //-------------------------------------------------------------------------
     
     const [eliminar, setEliminar]=useState(false);
 
     const [contador,setContador]=useState(168);
     const [name,setName]=useState("");
     const [nueva,setCreate]= useState(false);
-    const [horas,setHoras]= useState(""); //Horas en las que hace la tarea
-    const [materia,setMateria]= useState(""); //Materia del trabajo
-    const [tipo,setTipo]= useState(""); //Tipo de la entrega
-    const [fecha,setFecha]= useState(""); //Fecha de entrega de la tarea
     //Para la table info y añadir.
     const [data, setData] = useState([
         { id: 1, Tipo: 'Examen', FechaEntrega: "20/10/2023", Materia: "Matematicas",Horas: 2 },
@@ -154,7 +188,7 @@ function Example(){
 
     function onChangeInputH(event:any){
         const {value}=event.target
-        setHoras(value)
+        setHora(value)
     }
     function onChangeInputF(event:any){
         const {value}=event.target
@@ -240,38 +274,45 @@ function Example(){
 
             {nueva===true &&
                 <Slide direction="up"  in={nueva} mountOnEnter unmountOnExit >
-                <div>
-                <Button variant="contained" className='Atras' onClick={salirTareaFin}>Atrás</Button>
-                    <br></br>
-                    <br></br>
+                <div style={{marginTop:30}}>
+                    <div>
+                    <InputLabel>Tipo</InputLabel>
+                    <TextField id="outlined-basic" label="Tipo" variant="outlined" value={tipo} onChange={(event)=>{
+                        const {value}=event.target
+                        setTipo(value)
+                    }} />
                     <InputLabel>Materia</InputLabel>
-                    <select id="Materia" name="Materia" className="Opcion">
-                        <option value="Matematicas">Matematicas</option>
-                        <option value="Biologia">Biologia</option>
-                        <option value="Fisica">Fisica</option>
-                        <option value="Español">Español</option>
-                        <option value="Historia">Historia</option>
-                    </select>
-                    
-                    <InputLabel>Tipo de Entrega</InputLabel>
-                    <select id="Tipo" name="Tipo"  className="Opcion">
-                        <option value="Examen">Examen</option>
-                        <option value="Tarea">Tarea</option>
-                    </select> 
+                    <TextField id="outlined-basic" label="Materia" variant="outlined" value={materia} onChange={(event)=>{
+                        const {value}=event.target
+                        setMateria(value)
+                    }}/>
+                    <InputLabel>Horas</InputLabel>
+                    <TextField id="outlined-basic" label="Horas" variant="outlined" value={horas} onChange={(event)=>{
+                        const {value}=event.target
+                        setHora(value)
+                    }} />
+                    <InputLabel>nombre_actividad</InputLabel>
+                    <TextField id="outlined-basic" label="nombre_actividad" variant="outlined" value={nombre_actividad} onChange={(event)=>{
+                        const {value}=event.target
+                        setActividad(value)
+                    }} />
+                    <InputLabel>Fecha</InputLabel>
+                    <TextField id="outlined-basic" label="Fecha" variant="outlined" value={fecha} onChange={(event)=>{
+                        const {value}=event.target
+                        setFecha(value)
+                    }} />
                     <br></br>
                     <br></br>
-                    <InputLabel>Horas estimadas</InputLabel>
-                    <TextField id="outlined-basic" label="numero" variant="outlined" value={horas} onChange={onChangeInputH} className="Input"/>
-                    <br></br>
-                    <br></br>
-                    <InputLabel>Fecha de entrega</InputLabel>
-                    <TextField id="outlined-basic" label="dd/mm/yy" variant="outlined" value={fecha} onChange={onChangeInputF}/>
-                    <br></br>
-                    <br></br>
-                    <Button variant="outlined" endIcon={<SendIcon />} onClick={createTareaFin}>Crear</Button>
-                    
+                    <LoadingButton loading={saving} variant="contained" onClick={save}>Save</LoadingButton>
+                    </div>
+                    <div>
+                        {entregas.map((entrega:any)=>{
+                            return <>
+                                <p>{entrega.tipo} {entrega.materia} {entrega.horas} {entrega.nombre_actividad} {entrega.fecha}</p>
+                            </>
+                        })}
+                    </div>
 
-                          
                 </div>
                 </Slide>
 
