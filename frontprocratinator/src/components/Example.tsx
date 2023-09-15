@@ -12,13 +12,20 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Slide from '@mui/material/Slide';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Box from '@mui/material/Box';
 import LoadingButton from '@mui/lab/LoadingButton';
+import MenuItem from '@mui/material/MenuItem';
+import { format } from 'date-fns';
+import FormControl from '@mui/material/FormControl';
 import axios from "axios";
 import { useEffect, useState } from "react";
 import "./Fields.css"
 
 import "./EliminarActividad.css"
 import "./Example.css"
+
+
 
 
 
@@ -36,6 +43,7 @@ function Example(){
     const [entregas,setEntregas]=useState([]);
 
     //Cosillas
+    const [id,setID]=useState("");
     const [tipo,setTipo]=useState("");
     const [materia,setMateria]=useState("");
     const [nombre_actividad,setActividad]=useState("");
@@ -55,44 +63,52 @@ function Example(){
             setSaving(false);
             listEntregas();
         })
+        window.location.reload();
     }
+
+    function deleteV(){
+        setSaving(true);
+        axios.post("http://localhost:8000/entrega/delete",{
+            //-----------
+            id: id
+        }).then((response)=>{
+            setSaving(false);
+            listEntregas();
+        })
+        setCreate(false);
+        
+    }
+
     function listEntregas(){
         axios.get("http://localhost:8000/").then((response)=>{
             setEntregas(response.data)
         })
     }
+
     useEffect(()=>{
         listEntregas();
     },[])
-    //-------------------------------------------------------------------------
+    //------------------------------Valores Booleanos y date-------------------------------------------
     
     const [eliminar, setEliminar]=useState(false);
 
-    const [contador,setContador]=useState(168);
+    const [contador,setContador]=useState(730);
+    const currentDate = new Date();
+
+    
+
+    const formattedDate = format(currentDate, 'yyyy-MM-dd');
+    const [horasP, setProcrasti]= useState(730);
+    console.log(formattedDate);
     const [name,setName]=useState("");
     const [nueva,setCreate]= useState(false);
-    //Para la table info y añadir.
-    const [data, setData] = useState([
-        { id: 1, Tipo: 'Examen', FechaEntrega: "20/10/2023", Materia: "Matematicas",Horas: 2 },
-        { id: 2, Tipo: 'Examen', FechaEntrega:"20/10/2023", Materia: "Matematicas",Horas: 2 },
-        { id: 3, Tipo: 'Tarea', FechaEntrega: "20/10/2023",  Materia: "Matematicas",Horas: 2 },
-      ]);
-      const addElement = () => {
-        const newElement = { id: data.length + 1, Tipo: 'Examen', FechaEntrega: "20/10/2023", Materia: "Matematicas",Horas: 2 };
-        setData([...data, newElement]);
-      };
-    //---------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------------------
 
-    function sumaContador(){
-        console.log("Llamando a la funcion sumar")
-        setContador(contador+1);
-        console.log("Terminando la funcion sumar")
+    function calculateProcrastination()
+    {
+        //setProcrasti( Date(fecha))
     }
-    function restarContador(){
-        console.log("Llamando a la funcion sumar")
-        setContador(contador+3)
-        console.log("Terminando la funcion sumar")
-    }
+    //---------------------------------------------------------------------
 
     function createTarea()
     {
@@ -120,17 +136,17 @@ function Example(){
         nombre_actividad: string,
         fecha: string,
         tiempo: number,
-        delete_button: string
+        
       ) {
-        return { id, tipoEntrega, materia, nombre_actividad, fecha, tiempo, delete_button};
+        return { id, tipoEntrega, materia, nombre_actividad, fecha, tiempo};
       }
     
     const [rows, SetRows] = useState([
-        createData(0,'Tarea','Español','Leer el principito','12/04/2024',2,'botón ficticio'),
-        createData(1,'Tarea','Español', 'Leer de perfil','27/05/2025',2,'boton'),
-        createData(2,'Examen','Matemáticas', 'resolver ejercicios','23/01/2026',2,'botón'),
-        createData(3,'Tarea','Historia','Leer el manifiesto','24/06/2023',2,'boton'),
-        createData(4,'Examen','Geografía', 'Act 12', '16/09/2025',2,'boton'),
+        createData(0,'Tarea','Español','Leer el principito','12/04/2024',2),
+        createData(1,'Tarea','Español', 'Leer de perfil','27/05/2025',2),
+        createData(2,'Examen','Matemáticas', 'resolver ejercicios','23/01/2026',2),
+        createData(3,'Tarea','Historia','Leer el manifiesto','24/06/2023', 2),
+        createData(4,'Examen','Geografía', 'Act 12', '16/09/2025',2),
       ]);
       
       const sparseKeys = Object.keys(rows);
@@ -141,10 +157,9 @@ function Example(){
         materia: string,
         nombre_actividad: string,
         fecha: string,
-        tiempo: number,
-        delete_button: string){
+        tiempo: number){
 
-        const llave = createData(id,tipoEntrega,materia,nombre_actividad,fecha,tiempo,delete_button)
+        const llave = createData(id,tipoEntrega,materia,nombre_actividad,fecha,tiempo)
         /*for (llave in rows){
 
         }
@@ -165,16 +180,17 @@ function Example(){
         }*/
     }
 
-    //---------------------------------------------------------------------------------------------------------------------------
+    //-------------------------------------SET-----------------------------------------------
+    const handleChange = (event: SelectChangeEvent) => {
+        setTipo(event.target.value as string);
+      };
 
-    function createTareaFin()
-    {
-        console.log("Llamando a la funcion FinTareas")
-        const newElement = { id: data.length + 1, Tipo: 'Examen', FechaEntrega: "20/10/2023", Materia: "Matematicas",Horas:3 };
-        setContador(contador-3)
-        setData([...data, newElement]);
-        setCreate(false);
-    }
+      const handleChangeM = (event: SelectChangeEvent) => {
+        setMateria(event.target.value as string);
+      };
+    
+
+    //---------------------------------------------------------------------------------------------------------------------------
 
     function salirTareaFin(){
         setEliminar(false);
@@ -221,9 +237,9 @@ function Example(){
                 <div>
 
                 <br></br>
-                <InputLabel>Horas para procrastinar</InputLabel>
+                <InputLabel>Horas para procrastinar este mes</InputLabel>
                 
-                <h1 style={textStyle}>{contador}</h1>
+                <h1 style={textStyle}>{formattedDate}</h1>
 
                 <br></br>
                 <br></br>
@@ -246,19 +262,19 @@ function Example(){
                         </TableRow>
                         </TableHead>
                         <TableBody>
-                            {data.map((item) => (
+                            {entregas.map((entrega:any) => (
                                 
                                 <TableRow
-                                key={item.id}
+                                key={entrega.id}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 className='Fila'
                                 >
                                 <TableCell component="th" scope="row">
-                                {item.Tipo}
+                                {entrega.tipo}
                                 </TableCell>
-                                    <TableCell align="center">{item.FechaEntrega}</TableCell>
-                                    <TableCell align="center">{item.Materia}</TableCell>
-                                    <TableCell align="center">{item.Horas}</TableCell>
+                                    <TableCell align="center">{entrega.fecha}</TableCell>
+                                    <TableCell align="center">{entrega.materia}</TableCell>
+                                    <TableCell align="center">{entrega.horas}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -275,17 +291,44 @@ function Example(){
             {nueva===true &&
                 <Slide direction="up"  in={nueva} mountOnEnter unmountOnExit >
                 <div style={{marginTop:30}}>
+                <Button variant="outlined" className='Atras' onClick={salirTareaFin}>Atrás</Button>
                     <div>
                     <InputLabel>Tipo</InputLabel>
-                    <TextField id="outlined-basic" label="Tipo" variant="outlined" value={tipo} onChange={(event)=>{
-                        const {value}=event.target
-                        setTipo(value)
-                    }} />
+                    <Box sx={{ minWidth: 120 }}>
+                    <FormControl sx={{ m: 1, minWidth: 80 }}>
+                        <InputLabel id="demo-simple-select-label">Tipo</InputLabel>
+                        <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={tipo}
+                        label="Tipo"
+                        onChange={handleChange}
+                        >
+                        <MenuItem value={"Examen"}>Examen</MenuItem>
+                        <MenuItem value={"Tarea"}>Tarea</MenuItem>
+                        </Select>
+                    </FormControl>
+                    </Box>
                     <InputLabel>Materia</InputLabel>
-                    <TextField id="outlined-basic" label="Materia" variant="outlined" value={materia} onChange={(event)=>{
-                        const {value}=event.target
-                        setMateria(value)
-                    }}/>
+                    <Box sx={{ minWidth: 120 }}>
+                    <FormControl sx={{ m: 1, minWidth: 80 }}>
+                        <InputLabel id="demo-simple-select-label">Materia</InputLabel>
+                        <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={materia}
+                        label="Materia"
+                        onChange={handleChangeM}
+                        >
+                        <MenuItem value={"Matematicas"}>Matematicas</MenuItem>
+                        <MenuItem value={"Biologia"}>Biología</MenuItem>
+                        <MenuItem value={"Historia"}>Historia</MenuItem>
+                        <MenuItem value={"Fisica"}>Física</MenuItem>
+                        <MenuItem value={"Informatica"}>Informatica</MenuItem>
+                        <MenuItem value={"Ciencias_Sociales"}>Ciencias Sociales</MenuItem>
+                        </Select>
+                    </FormControl>
+                    </Box>
                     <InputLabel>Horas</InputLabel>
                     <TextField id="outlined-basic" label="Horas" variant="outlined" value={horas} onChange={(event)=>{
                         const {value}=event.target
@@ -297,13 +340,13 @@ function Example(){
                         setActividad(value)
                     }} />
                     <InputLabel>Fecha</InputLabel>
-                    <TextField id="outlined-basic" label="Fecha" variant="outlined" value={fecha} onChange={(event)=>{
+                    <TextField id="outlined-basic" label="YY-MM-DD" variant="outlined" value={fecha} onChange={(event)=>{
                         const {value}=event.target
                         setFecha(value)
                     }} />
                     <br></br>
                     <br></br>
-                    <LoadingButton loading={saving} variant="contained" onClick={save}>Save</LoadingButton>
+                    <LoadingButton loading={saving} variant="outlined" onClick={save}>Save</LoadingButton>
                     </div>
                     <div>
                         {entregas.map((entrega:any)=>{
@@ -325,7 +368,7 @@ function Example(){
             <Button variant="contained" className='Atras' onClick={salirTareaFin}>Atrás</Button>
             <h1>Eliminar Actividades</h1>
             <TableContainer component={Paper} className="TablaA">
-                <Table sx={{ minWidth: 450 }} aria-label="simple table" >
+                <Table sx={{ minWidth: 500 }} aria-label="simple table" >
                     <TableHead>
                     <TableRow className="TablaD">
                         <TableCell>Tipo de Actividad</TableCell>
@@ -333,31 +376,41 @@ function Example(){
                         <TableCell align="center">Actividad</TableCell>
                         <TableCell align="center">Fecha de Entrega</TableCell>
                         <TableCell align="center">Tiempo de Realizacion</TableCell>
-                        <TableCell align="center">Botón</TableCell>
+                        <TableCell align="center">ID</TableCell>
                     </TableRow>
                     </TableHead>
                     <TableBody>
-                    {rows.map((row) => (
+                    {entregas.map((entrega:any) => (
                         <TableRow
-                        key={row.nombre_actividad}
+                        key={entrega.id}
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         className='Fila'
                         >
                         <TableCell component="th" scope="row">
-                            {row.tipoEntrega}
+                            {entrega.tipo}
                         </TableCell>
-                        <TableCell align="center">{row.materia}</TableCell>
-                        <TableCell align="center">{row.nombre_actividad}</TableCell>
-                        <TableCell align="center">{row.fecha}</TableCell>
-                        <TableCell align="center">{row.tiempo}</TableCell>
+                        <TableCell align="center">{entrega.materia}</TableCell>
+                        <TableCell align="center">{entrega.nombre_actividad}</TableCell>
+                        <TableCell align="center">{entrega.fecha}</TableCell>
+                        <TableCell align="center">{entrega.horas}</TableCell>
+                        <TableCell align="center">{entrega.id}</TableCell>
                         <TableCell align="center">
-                        <Button variant="contained" className='Boton' onClick={()=>borrarActividad(row.id, row.tipoEntrega, row.materia, row.nombre_actividad, row.fecha,row.tiempo,row.delete_button)}>X</Button>
                         </TableCell>
                         </TableRow>
                     ))}
                     </TableBody>
                 </Table>
                 </TableContainer>
+                <br></br>
+                <InputLabel>ID</InputLabel>
+                    <TextField id="outlined-basic" label="numeber" variant="outlined" value={id} onChange={(event)=>{
+                        const {value}=event.target
+                        setID(value)
+                    }} />
+                <br></br>
+                <br></br>
+                <br></br>
+                <Button variant="contained" className='Boton' onClick={()=>deleteV()}>X</Button>
             </div>
             </Slide>
             }
