@@ -4,7 +4,12 @@ body , h1, h2, h3, h4, h5, h6{
   }
 
 .arial { font-family: Arial; }
-
+.Boxy
+{
+  margin-left: auto !important;
+  margin-right: auto !important;
+  justify-content: center !important;
+}
 /* TopBar.css */
 .top-bar {
     background-color: #2c2e2b;

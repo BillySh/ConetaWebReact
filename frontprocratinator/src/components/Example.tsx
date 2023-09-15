@@ -17,6 +17,11 @@ import Box from '@mui/material/Box';
 import LoadingButton from '@mui/lab/LoadingButton';
 import MenuItem from '@mui/material/MenuItem';
 import { format } from 'date-fns';
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import ListItem from '@mui/material/ListItem';
 import FormControl from '@mui/material/FormControl';
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -93,11 +98,23 @@ function Example(){
     const [eliminar, setEliminar]=useState(false);
 
     const [contador,setContador]=useState(730);
+    const [pT,setPT]=useState(0);
     const currentDate = new Date();
 
     
 
     const formattedDate = format(currentDate, 'yyyy-MM-dd');
+    const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+    const remainingDays = lastDayOfMonth.getDate() - currentDate.getDate();
+    const remainingHours = remainingDays * 24;
+    const animeHours = remainingHours / 0.5;
+    const roundHours = remainingHours / 2;
+    const seindfeldHours = remainingHours / 66;
+    const monsterHours = remainingHours / 1.5;
+    const jurasicParkHours = remainingHours / 1.3;
+    const harryHours = remainingHours / 19.5;
+    const shrekHours = remainingHours / 1.5;
+
     const [horasP, setProcrasti]= useState(730);
     console.log(formattedDate);
     const [name,setName]=useState("");
@@ -238,8 +255,56 @@ function Example(){
 
                 <br></br>
                 <InputLabel>Horas para procrastinar este mes</InputLabel>
+
                 
-                <h1 style={textStyle}>{formattedDate}</h1>
+                <h1 style={textStyle}>{remainingHours}</h1>
+
+                <br></br>
+                <br></br>
+
+
+                <Box  className="Boxy" sx={{  width: '50%', minWidth: 80, bgcolor: 'background.paper' }}>
+                <nav aria-label="secondary mailbox folders">
+                    <List>
+                    <ListItem disablePadding>
+                        <ListItemButton component="a" href="https://youtu.be/u39C2j2o40E?si=oz5_eD-b1P7MpHB_">
+                        <ListItemText primary={"Puedes ver Todo Harry Potter una cantidad de" + " : "+ harryHours + "  veces"} />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton component="a" href= "https://youtu.be/LYPJoA9udJo?si=JvQx4yKRPrqowRZc">
+                        <ListItemText primary= {"Capitulos de anime" + " : "+ animeHours} />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton component="a" href="https://youtu.be/40X5EX6Us7c?si=u2-PxrDYIPxGN3gO">
+                        <ListItemText primary={"Puedes ver another round una cantidad de " + " : "+ roundHours + "  veces"} />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton component="a" href="https://www.youtube.com/watch?v=w1l94szMYF0&list=PL1RaM8eddoiq9rYTViOLQ94C6CwNdqJao&ab_channel=Vanishan">
+                        <ListItemText primary={"Puedes ver another seinfeld una cantidad de" + " : "+ seindfeldHours + "  veces"} />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton component="a" href="https://youtu.be/CGbgaHoapFM?si=8jX-xIGhljLGQwkB">
+                        <ListItemText primary={"Puedes ver Monsters Inc una cantidad de" + " : "+ monsterHours + "  veces"} />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton component="a" href="https://youtu.be/gjIaV6CU0wA?si=sl4OK6paxtpjb0Ze">
+                        <ListItemText primary={"Puedes ver JurasicPark3 una cantidad de" + " : "+ jurasicParkHours + "  veces"} />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton component="a" href="https://youtu.be/TMIsxOsuwNA?si=8l1i2WyhGWxR2Pwi">
+                        <ListItemText primary={"Puedes ver Shrek una cantidad de" + " : "+ shrekHours + "  veces"} />
+                        </ListItemButton>
+                    </ListItem>
+                    
+                    </List>
+                </nav>
+                </Box>
 
                 <br></br>
                 <br></br>
@@ -393,7 +458,7 @@ function Example(){
                         <TableCell align="center">{entrega.nombre_actividad}</TableCell>
                         <TableCell align="center">{entrega.fecha}</TableCell>
                         <TableCell align="center">{entrega.horas}</TableCell>
-                        <TableCell align="center">{entrega.id}</TableCell>
+                        <Button variant="contained" className='Boton' onClick={()=>{setID(entrega.id)}}>X</Button>
                         <TableCell align="center">
                         </TableCell>
                         </TableRow>
